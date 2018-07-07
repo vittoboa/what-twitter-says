@@ -2,6 +2,7 @@ from json import loads
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
+from csv import DictWriter
 
 import config as credentials  # fill the file with your own credentials
 
@@ -21,26 +22,35 @@ def get_text(text_info):
     return text
 
 
+def create_file():
+    with open(fetched_tweets_file, 'a', newline='') as tweets_f:
+        writer = DictWriter(tweets_f, fieldnames=fieldnames)
+        # write the column titles in the first row
+        writer.writeheader()
+
+
 class StdOutListener(StreamListener):
     def on_data(self, tweet_info):
+        ## clean and store the tweets ##
         try:
-            ## clean tweet informations ##
-            # convert the tweet_info from string to dictionary
-            tweet_info = loads(tweet_info)
-            # get the time of the tweet
-            tweet_time = tweet_info["created_at"].split()[3]
-            # get the text of the tweet
-            if "retweeted_status" in tweet_info.keys():
-                # if it's a retweet get the original tweet text
-                tweet_text = get_text(tweet_info["retweeted_status"])
-            else:
-                tweet_text = get_text(tweet_info)
-            # make the tweet one single line
-            tweet_text = tweet_text.replace("\n", " ")
-            # format the tweet
-            tweet = "{0}\n{1}\n".format(tweet_time, tweet_text)
+            with open(fetched_tweets_file, 'a', newline='') as tweets_f:
+                ## clean tweet informations ##
+                # convert the tweet_info from string to dictionary
+                tweet_info = loads(tweet_info)
+                # get the time of the tweet
+                tweet_time = tweet_info["created_at"].split()[3]
+                # get the text of the tweet
+                if "retweeted_status" in tweet_info.keys():
+                    # if it's a retweet get the original tweet text
+                    tweet_text = get_text(tweet_info["retweeted_status"])
+                else:
+                    tweet_text = get_text(tweet_info)
+                # make the tweet one single line
+                tweet_text = tweet_text.replace("\n", " ")
 
-            print(tweet)
+                ## store the tweet ##
+                writer = DictWriter(tweets_f, fieldnames=fieldnames)
+                writer.writerow({fieldnames[0]: tweet_time, fieldnames[1]: tweet_text})
 
         except BaseException as e:
             print("Error on_data %s" % str(e))
@@ -55,6 +65,10 @@ class StdOutListener(StreamListener):
 if __name__ == '__main__':
     keywords_list = ["WorldCup"]
     languages_list = ["en"]
+    fetched_tweets_file = "tweets.csv"
+    fieldnames = ['time', 'text']
+
+    create_file()
 
     auth = authentication()
     listener = StdOutListener()
