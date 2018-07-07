@@ -33,22 +33,22 @@ class StdOutListener(StreamListener):
     def on_data(self, tweet_info):
         ## clean and store the tweets ##
         try:
-            with open(fetched_tweets_file, 'a', newline='') as tweets_f:
-                ## clean tweet informations ##
-                # convert the tweet_info from string to dictionary
-                tweet_info = loads(tweet_info)
-                # get the time of the tweet
-                tweet_time = tweet_info["created_at"].split()[3]
-                # get the text of the tweet
-                if "retweeted_status" in tweet_info.keys():
-                    # if it's a retweet get the original tweet text
-                    tweet_text = get_text(tweet_info["retweeted_status"])
-                else:
-                    tweet_text = get_text(tweet_info)
+            ## clean tweet informations ##
+            # convert the tweet_info from string to dictionary
+            tweet_info = loads(tweet_info)
+            # get the time of the tweet
+            tweet_time = tweet_info["created_at"].split()[3]
+            # get the text of the tweet
+            if "retweeted_status" in tweet_info.keys():
+                # if it's a retweet get the original tweet text
+                tweet_text = get_text(tweet_info["retweeted_status"])
+            else:
+                tweet_text = get_text(tweet_info)
                 # make the tweet one single line
-                tweet_text = tweet_text.replace("\n", " ")
+            tweet_text = tweet_text.replace("\n", " ")
 
-                ## store the tweet ##
+            ## store the tweet ##
+            with open(fetched_tweets_file, 'a', newline='') as tweets_f:
                 writer = DictWriter(tweets_f, fieldnames=fieldnames)
                 writer.writerow({fieldnames[0]: tweet_time, fieldnames[1]: tweet_text})
 
