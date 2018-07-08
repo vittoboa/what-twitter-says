@@ -42,7 +42,7 @@ class StdOutListener(tweepy.StreamListener):
                 tweet_text = get_text(tweet_info["retweeted_status"])
             else:
                 tweet_text = get_text(tweet_info)
-                # make the tweet one single line
+            # make the tweet one single line
             tweet_text = tweet_text.replace("\n", " ")
 
             ## store the tweet ##
