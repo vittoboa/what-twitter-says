@@ -1,14 +1,12 @@
-from json import loads
-from tweepy.streaming import StreamListener
-from tweepy import OAuthHandler
-from tweepy import Stream
-from csv import DictWriter
+import json
+import tweepy
+import csv
 
 import config as credentials  # fill the file with your own credentials
 
 
 def authentication():
-    auth = OAuthHandler(credentials.CONSUMER_KEY, credentials.CONSUMER_SECRET)
+    auth = tweepy.OAuthHandler(credentials.CONSUMER_KEY, credentials.CONSUMER_SECRET)
     auth.set_access_token(credentials.ACCESS_TOKEN, credentials.ACCESS_SECRET)
     return auth
 
@@ -24,18 +22,18 @@ def get_text(text_info):
 
 def create_file():
     with open(fetched_tweets_file, 'a', newline='') as tweets_f:
-        writer = DictWriter(tweets_f, fieldnames=fieldnames)
+        writer = csv.DictWriter(tweets_f, fieldnames=fieldnames)
         # write the column titles in the first row
         writer.writeheader()
 
 
-class StdOutListener(StreamListener):
+class StdOutListener(tweepy.StreamListener):
     def on_data(self, tweet_info):
         ## clean and store the tweets ##
         try:
             ## clean tweet informations ##
             # convert the tweet_info from string to dictionary
-            tweet_info = loads(tweet_info)
+            tweet_info = json.loads(tweet_info)
             # get the time of the tweet
             tweet_time = tweet_info["created_at"].split()[3]
             # get the text of the tweet
@@ -49,7 +47,7 @@ class StdOutListener(StreamListener):
 
             ## store the tweet ##
             with open(fetched_tweets_file, 'a', newline='') as tweets_f:
-                writer = DictWriter(tweets_f, fieldnames=fieldnames)
+                writer = csv.DictWriter(tweets_f, fieldnames=fieldnames)
                 writer.writerow({fieldnames[0]: tweet_time, fieldnames[1]: tweet_text})
 
         except BaseException as e:
@@ -73,7 +71,7 @@ if __name__ == '__main__':
     auth = authentication()
     listener = StdOutListener()
     # stream tweets
-    stream = Stream(auth, listener)
+    stream = tweepy.Stream(auth, listener)
 
     # filter Twitter stream
     stream.filter(languages=languages_list, track=keywords_list)
