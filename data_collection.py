@@ -3,7 +3,7 @@ import tweepy
 import csv
 
 import config as credentials  # fill the file with your own credentials
-
+import constants as K
 
 def authentication():
     auth = tweepy.OAuthHandler(credentials.CONSUMER_KEY, credentials.CONSUMER_SECRET)
@@ -21,8 +21,8 @@ def get_text(text_info):
 
 
 def create_file():
-    with open(fetched_tweets_file, 'a', newline='') as tweets_f:
-        writer = csv.DictWriter(tweets_f, fieldnames=fieldnames)
+    with open(K.FETCHED_TWEETS_FILE, 'a', newline='') as tweets_f:
+        writer = csv.DictWriter(tweets_f, fieldnames=K.FIELDNAMES)
         # write the column titles in the first row
         writer.writeheader()
 
@@ -46,9 +46,9 @@ class StdOutListener(tweepy.StreamListener):
             tweet_text = tweet_text.replace("\n", " ")
 
             ## store the tweet ##
-            with open(fetched_tweets_file, 'a', newline='') as tweets_f:
-                writer = csv.DictWriter(tweets_f, fieldnames=fieldnames)
-                writer.writerow({fieldnames[0]: tweet_time, fieldnames[1]: tweet_text})
+            with open(K.FETCHED_TWEETS_FILE, 'a', newline='') as tweets_f:
+                writer = csv.DictWriter(tweets_f, fieldnames=K.FIELDNAMES)
+                writer.writerow({K.FIELDNAMES[0]: tweet_time, K.FIELDNAMES[1]: tweet_text})
 
         except BaseException as e:
             print("Error on_data %s" % str(e))
@@ -61,11 +61,6 @@ class StdOutListener(tweepy.StreamListener):
 
 
 if __name__ == '__main__':
-    keywords_list = ["WorldCup"]
-    languages_list = ["en"]
-    fetched_tweets_file = "tweets.csv"
-    fieldnames = ['time', 'text']
-
     create_file()
 
     auth = authentication()
@@ -74,4 +69,4 @@ if __name__ == '__main__':
     stream = tweepy.Stream(auth, listener)
 
     # filter Twitter stream
-    stream.filter(languages=languages_list, track=keywords_list)
+    stream.filter(languages=K.LANGUAGES_LIST, track=K.KEYWORDS_LIST)
