@@ -11,4 +11,4 @@ KEYWORDS_LIST = [
 LANGUAGES_LIST = ["en"]
 FETCHED_TWEETS_FILE = "raw_tweets.csv"
 CLEANED_TWEETS_FILE = "cleaned_tweets.csv"
-FIELDNAMES = ['time', 'text']
+FIELDNAMES = ["time", "text"]
