@@ -14,4 +14,5 @@ if __name__ == '__main__':
         for row in reader:
             text = row[K.FIELDNAMES[1]]
             text = remove_non_alphanumeric(text)
+            text = text.lower()
             print(text)
