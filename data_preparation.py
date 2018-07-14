@@ -12,7 +12,7 @@ def remove_seconds(time):
 
 
 def remove_non_alphanumeric(text):
-    return ":".join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", text).split())
+    return " ".join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", text).split())
 
 
 if __name__ == '__main__':
