@@ -4,8 +4,15 @@ import re
 import constants as K
 
 
+def remove_seconds(time):
+    # get only hour and minute
+    hour = time.split(":")[0]
+    minute = time.split(":")[1]
+    return "{}:{}".format(hour, minute)
+
+
 def remove_non_alphanumeric(text):
-    return " ".join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", text).split())
+    return ":".join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", text).split())
 
 
 if __name__ == '__main__':
@@ -19,7 +26,10 @@ if __name__ == '__main__':
         for row in reader:
             # get raw time and text
             time, text = row[K.FIELDNAMES[0]], row[K.FIELDNAMES[1]]
-            
+
+            # clean time
+            time = remove_seconds(time)
+
             # clean text
             text = remove_non_alphanumeric(text)
             text = text.lower()
