@@ -9,10 +9,14 @@ def remove_non_alphanumeric(text):
 
 
 if __name__ == '__main__':
-    with open(K.FETCHED_TWEETS_FILE, newline='') as tweets_f:
-        reader = csv.DictReader(tweets_f)
+    with open(K.FETCHED_TWEETS_FILE, 'r', newline='') as f_input, open(K.CLEANED_TWEETS_FILE, 'w') as f_output:
+        reader = csv.DictReader(f_input)
+        writer = csv.DictWriter(f_output, fieldnames=K.FIELDNAMES)
         for row in reader:
-            text = row[K.FIELDNAMES[1]]
+            time, text = row[K.FIELDNAMES[0]], row[K.FIELDNAMES[1]]
             text = remove_non_alphanumeric(text)
             text = text.lower()
-            print(text)
+            writer.writerow({
+                K.FIELDNAMES[0]: time,
+                K.FIELDNAMES[1]: text
+            })
