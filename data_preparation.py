@@ -15,6 +15,12 @@ def remove_non_alphanumeric(text):
     return " ".join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", text).split())
 
 
+def remove_match_hashtags(text):
+    return " ".join(word for word in text.split()
+        if not (K.TEAM_HOME_ABBREVIATION in word 
+            and K.TEAM_AWAY_ABBREVIATION in word))
+
+
 if __name__ == '__main__':
     with open(K.FETCHED_TWEETS_FILE, 'r', newline='') as f_input, open(K.CLEANED_TWEETS_FILE, 'w') as f_output:
         reader = csv.DictReader(f_input)
@@ -33,6 +39,7 @@ if __name__ == '__main__':
             # clean text
             text = remove_non_alphanumeric(text)
             text = text.lower()
+            text = remove_match_hashtags(text)
 
             # store time and text in the file
             writer.writerow({
