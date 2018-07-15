@@ -29,7 +29,8 @@ if __name__ == '__main__':
         # write the column names in the first row
         writer.writeheader()
         
-        for row in reader:
+        reader_sorted_by_time = sorted(reader, key=lambda row:row[K.FIELDNAMES[0]])
+        for row in reader_sorted_by_time:
             # get raw time and text
             time, text = row[K.FIELDNAMES[0]], row[K.FIELDNAMES[1]]
 
