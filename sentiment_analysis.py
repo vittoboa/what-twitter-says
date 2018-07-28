@@ -39,7 +39,7 @@ if __name__ == '__main__':
                     K.FIELDNAMES_SENTIMENT[0]: row_time,
                     K.FIELDNAMES_SENTIMENT[1]: team_home_mentions_num,
                     K.FIELDNAMES_SENTIMENT[2]: team_away_mentions_num
-                    })
+                })
 
                 row_time = time
                 team_home_mentions_num, team_away_mentions_num = 0, 0
