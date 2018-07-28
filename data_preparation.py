@@ -1,5 +1,6 @@
 import csv
 import re
+from nltk.corpus import stopwords
 
 import constants as K
 
@@ -15,6 +16,10 @@ def remove_non_alphanumeric(text):
     return " ".join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z# \t])|(\w+:\/\/\S+)", " ", text).split())
 
 
+def remove_stopwords(text):
+    return " ".join(word for word in text.split() if word not in stopwords)
+
+
 def remove_match_hashtags(text):
     return " ".join(word for word in text.split()
         if not (K.TEAM_HOME_ABBREVIATION in word 
@@ -22,6 +27,8 @@ def remove_match_hashtags(text):
 
 
 if __name__ == '__main__':
+    stopwords = stopwords.words("english")
+
     with open(K.FETCHED_TWEETS_FILE, 'r', newline='') as f_input, open(K.CLEANED_TWEETS_FILE, 'w') as f_output:
         reader = csv.DictReader(f_input)
         writer = csv.DictWriter(f_output, fieldnames=K.FIELDNAMES)
@@ -41,6 +48,7 @@ if __name__ == '__main__':
             text = remove_non_alphanumeric(text)
             text = text.lower()
             text = remove_match_hashtags(text)
+            text = remove_stopwords(text)
 
             # store time and text in the file
             writer.writerow({
