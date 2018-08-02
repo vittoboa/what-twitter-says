@@ -1,3 +1,4 @@
+from textblob import TextBlob
 import csv
 
 import constants as K
@@ -13,6 +14,11 @@ def is_last_row(row_count, current_row):
 
 def is_team_mentioned(team_name, team_hashtag, text):
     return team_name in text or ("#" + team_hashtag) in text
+
+
+def is_text_positive(text):
+    blob = TextBlob(text)
+    return blob.sentiment.polarity >= 0
 
 
 if __name__ == '__main__':
