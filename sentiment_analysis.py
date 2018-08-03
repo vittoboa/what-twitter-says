@@ -22,14 +22,11 @@ def is_text_positive(text):
 
 
 if __name__ == '__main__':
-    team_home_mentions_num, team_away_mentions_num = 0, 0
-
     with open(K.CLEANED_TWEETS_FILE, 'r', newline='') as f_input, open(K.SENTIMENT_TWEETS_FILE, 'w') as f_output:
         reader = csv.DictReader(f_input)
         reader = list(reader)
         writer = csv.DictWriter(f_output, fieldnames=K.FIELDNAMES_SENTIMENT)
 
-        row_time = None
         is_first_row = True
         row_count = file_lines_count(reader)
 
@@ -37,20 +34,24 @@ if __name__ == '__main__':
             time, text = row[K.FIELDNAMES[0]], row[K.FIELDNAMES[1]]
 
             if is_first_row:
-                row_time = time
-                writer.writeheader()
                 is_first_row = False
-            elif row_time != time or is_last_row(row_count, i):
-                writer.writerow({
-                    K.FIELDNAMES_SENTIMENT[0]: row_time,
-                    K.FIELDNAMES_SENTIMENT[1]: team_home_mentions_num,
-                    K.FIELDNAMES_SENTIMENT[2]: team_away_mentions_num
-                })
+                writer.writeheader()
+                # create empty row
+                sentiment_row = {field: 0 for field in K.FIELDNAMES_SENTIMENT}
+            elif sentiment_row["time"] != time or is_last_row(row_count, i):
+                # store old row to file
+                writer.writerow(sentiment_row)
+                # reset row
+                sentiment_row = {field: 0 for field in K.FIELDNAMES_SENTIMENT}
 
-                row_time = time
-                team_home_mentions_num, team_away_mentions_num = 0, 0
-
+            sentiment_row["time"] = time
             if is_team_mentioned(K.TEAM_HOME, K.TEAM_HOME_ABBREVIATION, text):
-                team_home_mentions_num += 1
+                if is_text_positive(text):
+                    sentiment_row[K.TEAM_HOME_POSITIVE] += 1
+                else:
+                    sentiment_row[K.TEAM_HOME_NEGATIVE] += 1
             if is_team_mentioned(K.TEAM_AWAY, K.TEAM_AWAY_ABBREVIATION, text):
-                team_away_mentions_num += 1
+                if is_text_positive(text):
+                    sentiment_row[K.TEAM_AWAY_POSITIVE] += 1
+                else:
+                    sentiment_row[K.TEAM_AWAY_NEGATIVE] += 1
