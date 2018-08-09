@@ -1,6 +1,11 @@
 # what-twitter-says
 Three individual scripts to collect, clean and analyze tweets
 
+## Requirements
+* Python 3
+* Tweepy
+* TextBlob
+
 ## Usage
 * Clone repo
 * Install required additional libraries
