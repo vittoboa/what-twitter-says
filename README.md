@@ -4,7 +4,7 @@ Three individual scripts to collect, clean and analyze tweets
 ## Usage
 * Clone repo
 * Install required additional libraries
-* Fill in your Twitter App credentials to config.py.
+* Fill in your Twitter App credentials to config.py
 * Run the desidered script in the terminal
 ```bash
 python3 data_collection.py
