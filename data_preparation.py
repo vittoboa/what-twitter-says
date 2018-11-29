@@ -6,9 +6,7 @@ import constants as K
 
 
 def remove_seconds(time):
-    # get only hour and minute
-    hour = time.split(":")[0]
-    minute = time.split(":")[1]
+    hour, minute, _ = time.split(":")
     return "{}:{}".format(hour, minute)
 
 
