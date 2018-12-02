@@ -12,13 +12,15 @@ def is_last_row(row_count, current_row):
     return current_row == row_count
 
 
-def is_team_mentioned(team_name, team_hashtag, text):
-    return team_name in text or ("#" + team_hashtag) in text
+def is_sentiment_meaningful(sentiment_score):
+    return abs(sentiment_score) > 0.15
 
 
-def is_text_positive(text):
+def get_sentiment(text):
     blob = TextBlob(text)
-    return blob.sentiment.polarity >= 0
+    sentiment = blob.sentiment.polarity
+
+    return sentiment if is_sentiment_meaningful(sentiment) else 0    
 
 
 if __name__ == '__main__':
@@ -45,13 +47,4 @@ if __name__ == '__main__':
                 sentiment_row = {field: 0 for field in K.FIELDNAMES_SENTIMENT}
 
             sentiment_row["time"] = time
-            if is_team_mentioned(K.TEAM_HOME, K.TEAM_HOME_ABBREVIATION, text):
-                if is_text_positive(text):
-                    sentiment_row[K.TEAM_HOME_POSITIVE] += 1
-                else:
-                    sentiment_row[K.TEAM_HOME_NEGATIVE] += 1
-            if is_team_mentioned(K.TEAM_AWAY, K.TEAM_AWAY_ABBREVIATION, text):
-                if is_text_positive(text):
-                    sentiment_row[K.TEAM_AWAY_POSITIVE] += 1
-                else:
-                    sentiment_row[K.TEAM_AWAY_NEGATIVE] += 1
+            sentiment_row["sentiment"] += get_sentiment(text)
