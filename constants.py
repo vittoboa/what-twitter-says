@@ -1,22 +1,12 @@
-TEAM_HOME = "france"
-TEAM_HOME_ABBREVIATION = "fra"
-TEAM_AWAY = "croatia"
-TEAM_AWAY_ABBREVIATION = "cro"
 KEYWORDS_LIST = [
-    TEAM_HOME,
-    TEAM_HOME_ABBREVIATION,
-    TEAM_AWAY,
-    TEAM_AWAY_ABBREVIATION
+    "france",
+    "fra",
+    "croatia",
+    "cro",
 ]
 LANGUAGES_LIST = ["en"]
-FETCHED_TWEETS_FILE = "raw_tweets.csv"
-CLEANED_TWEETS_FILE = "cleaned_tweets.csv"
+FETCHED_TWEETS_FILE   = "raw_tweets.csv"
+CLEANED_TWEETS_FILE   = "cleaned_tweets.csv"
 SENTIMENT_TWEETS_FILE = "sentiment_tweets.csv"
-FIELDNAMES = ["time", "text"]
-TEAM_HOME_POSITIVE, TEAM_HOME_NEGATIVE = TEAM_HOME + " positive", TEAM_HOME + " negative"
-TEAM_AWAY_POSITIVE, TEAM_AWAY_NEGATIVE = TEAM_AWAY + " positive", TEAM_AWAY + " negative"
-FIELDNAMES_SENTIMENT = [
-    "time",
-    TEAM_HOME_POSITIVE, TEAM_HOME_NEGATIVE,
-    TEAM_AWAY_POSITIVE, TEAM_AWAY_NEGATIVE
-]
+FIELDNAMES           = ["time", "text"]
+FIELDNAMES_SENTIMENT = ["time", "sentiment"]
