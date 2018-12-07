@@ -8,6 +8,7 @@ LANGUAGES_LIST = ["en"]
 FETCHED_TWEETS_FILE   = "raw_tweets.csv"
 CLEANED_TWEETS_FILE   = "cleaned_tweets.csv"
 SENTIMENT_TWEETS_FILE = "sentiment_tweets.csv"
+WORDS_COUNT_FILE      = "words_count.csv"
 FIELDNAMES = ["time", "text"]
 SLANG = {
     "ftw": "for the win",
