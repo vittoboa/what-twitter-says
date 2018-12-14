@@ -17,13 +17,12 @@ def get_sentiment(text):
 
 
 if __name__ == '__main__':
-    sentiment_overtime = {}
-    words_count = collections.Counter()
+    sentiment_overtime, words_count = collections.Counter(), collections.Counter()
 
     with open(K.CLEANED_TWEETS_FILE, 'r') as f_input:
         reader = csv.reader(f_input)
         for time, text in reader:
-            sentiment_overtime[time] = sentiment_overtime.get(time, 0) + get_sentiment(text)
+            sentiment_overtime[time] += get_sentiment(text)
             words_count.update(text.split())
 
     with open(K.SENTIMENT_TWEETS_FILE, 'w') as f_output_sentiment:
