@@ -16,3 +16,7 @@ python3 data_collection.py
 python3 data_preparation.py
 python3 sentiment_analysis.py
 ```
+
+## Analysis example: 2018 FIFA World Cup Final
+Sentiment analysis of Twitter comments:
+<img src="media/sentiment_analysis.jpg" width="100%">
