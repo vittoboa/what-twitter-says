@@ -12,12 +12,8 @@ def authentication():
 
 
 def get_text(text_info):
-    if text_info["truncated"]:
-        # if the original text has been truncated get the full text
-        text = text_info["extended_tweet"]["full_text"]
-    else:
-        text = text_info["text"]
-    return text
+    is_truncated = text_info["truncated"]
+    return text_info["extended_tweet"]["full_text"] if is_truncated else text_info["text"]
 
 
 def create_file():
@@ -37,11 +33,9 @@ class StdOutListener(tweepy.StreamListener):
             # get the time of the tweet
             tweet_time = tweet_info["created_at"].split()[3]
             # get the text of the tweet
-            if "retweeted_status" in tweet_info.keys():
-                # if it's a retweet get the original tweet text
-                tweet_text = get_text(tweet_info["retweeted_status"])
-            else:
-                tweet_text = get_text(tweet_info)
+            is_retweet = "retweeted_status" in tweet_info.keys()
+            text_info  = tweet_info["retweeted_status"] if is_retweet else tweet_info
+            tweet_text = get_text(text_info)
 
             ## store the tweet ##
             with open(K.FETCHED_TWEETS_FILE, 'a', newline='') as tweets_f:
