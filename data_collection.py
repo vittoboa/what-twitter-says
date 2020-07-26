@@ -49,7 +49,7 @@ class StdOutListener(tweepy.StreamListener):
                 writer.writerow({K.FIELDNAMES[0]: tweet_time, K.FIELDNAMES[1]: tweet_text})
 
         except BaseException as e:
-            print("Error on_data %s" % str(e))
+            print(f"Error on_data {e}")
 
         return True
 

@@ -7,7 +7,7 @@ import constants as K
 
 def remove_seconds(time):
     hour, minute, _ = time.split(":")
-    return "{}:{}".format(hour, minute)
+    return f"{hour}:{minute}"
 
 
 def remove_non_alphanumeric(text):
