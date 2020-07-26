@@ -6,7 +6,7 @@ import constants as K
 
 
 def is_sentiment_meaningful(sentiment_score):
-    return abs(sentiment_score) > 0.15
+    return abs(sentiment_score) > K.SENTIMENT_THRESHOLD
 
 
 def get_sentiment(text):

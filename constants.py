@@ -21,3 +21,5 @@ SLANG = {
     "b4": "before",
     "idk": "i don't know"
 }
+
+SENTIMENT_THRESHOLD = 0.15
